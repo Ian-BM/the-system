@@ -154,6 +154,46 @@ function initPinInput() {
   });
 }
 
+// ---------------------------------------------------------------------------
+// PWA — service worker registration + install prompt
+// ---------------------------------------------------------------------------
+
+function initServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch((err) => {
+      console.error("Service worker registration failed:", err);
+    });
+  });
+}
+
+let deferredInstallPrompt = null;
+
+function initInstallPrompt() {
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    document.querySelectorAll("[data-install-btn]").forEach((btn) => {
+      btn.hidden = false;
+    });
+  });
+
+  document.querySelectorAll("[data-install-btn]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      document.querySelectorAll("[data-install-btn]").forEach((b) => (b.hidden = true));
+    });
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    document.querySelectorAll("[data-install-btn]").forEach((b) => (b.hidden = true));
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initQuestToggles();
   initScoldModal();
@@ -161,4 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initTradingForm();
   initJournalForm();
   initPinInput();
+  initServiceWorker();
+  initInstallPrompt();
 });

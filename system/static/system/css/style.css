@@ -21,6 +21,8 @@
   --sidebar-width: 220px;
   --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --font-mono: "SFMono-Regular", "JetBrains Mono", Consolas, monospace;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 * {
@@ -198,12 +200,26 @@ button {
   display: none;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   padding: 14px 16px;
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 20;
+}
+
+.install-chip {
+  background: transparent;
+  border: 1px solid var(--accent-dim);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .topbar-brand {
@@ -880,7 +896,7 @@ button {
   }
 
   .main-content {
-    padding: 20px 16px 90px;
+    padding: 20px 16px calc(90px + env(safe-area-inset-bottom, 0px));
     max-width: 100%;
   }
 
@@ -894,6 +910,7 @@ button {
     border-top: 1px solid var(--border);
     z-index: 20;
     padding: 6px 4px;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
   }
 
   .bottom-nav-item {

@@ -2,11 +2,16 @@
 Django settings for The System.
 """
 
+import time
 from pathlib import Path
 
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Bumps once per process start (i.e. once per deploy/restart) so the service
+# worker knows to invalidate its cache without needing a build step.
+APP_VERSION = str(int(time.time()))
 
 env = environ.Env(
     DEBUG=(bool, False),

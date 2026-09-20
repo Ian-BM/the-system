@@ -18,4 +18,6 @@ urlpatterns = [
     path("api/trading/", views.SaveTradingView.as_view(), name="api_save_trading"),
     path("api/journal/", views.SaveJournalView.as_view(), name="api_save_journal"),
     path("api/scold/dismiss/", views.ScoldDismissView.as_view(), name="api_scold_dismiss"),
+    path("sw.js", views.ServiceWorkerView.as_view(), name="service_worker"),
+    path("offline/", views.OfflineView.as_view(), name="offline"),
 ]

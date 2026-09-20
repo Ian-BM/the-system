@@ -2,8 +2,10 @@ import json
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
 
-from django.http import JsonResponse
+from django.conf import settings
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
@@ -446,3 +448,24 @@ class ScoldDismissView(RequireAuthMixin, View):
 
         dismiss_scold(target_date)
         return JsonResponse({"dismissed": target_date.isoformat()})
+
+
+# ---------------------------------------------------------------------------
+# PWA support
+# ---------------------------------------------------------------------------
+
+
+class ServiceWorkerView(View):
+    """Serves the service worker from the origin root so its default scope
+    covers the whole app, not just /static/system/js/."""
+
+    def get(self, request):
+        js = render_to_string("system/sw.js", {"cache_version": settings.APP_VERSION})
+        response = HttpResponse(js, content_type="application/javascript")
+        response["Cache-Control"] = "no-cache"
+        response["Service-Worker-Allowed"] = "/"
+        return response
+
+
+class OfflineView(TemplateView):
+    template_name = "system/offline.html"

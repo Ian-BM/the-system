@@ -87,6 +87,16 @@ visit requires that PIN.
   with its scold message. Dismissing it ("I hear you. Moving on.") marks
   that day as seen — it won't show again.
 
+## Installing as an app (PWA)
+
+The System is an installable Progressive Web App — on both mobile and
+desktop, the browser (or an "Install App" button in the sidebar/topbar)
+lets you add it to your home screen or dock as a standalone app, with its
+own icon, no browser chrome. It also registers a service worker that
+caches the app shell (CSS/JS/icons) and falls back to a lightweight
+offline screen when there's no connection; quest data itself always
+requires a live connection to stay accurate.
+
 ## Admin access
 
 Django's built-in admin is available at `/admin/` for direct data
