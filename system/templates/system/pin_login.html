@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The System — Login</title>
+  <link rel="stylesheet" href="{% static 'system/css/style.css' %}">
+</head>
+<body>
+  <div class="pin-screen">
+    <div class="pin-card">
+      <div class="pin-logo">The System</div>
+      <div class="pin-tagline">ENTER ACCESS PIN</div>
+
+      {% if error %}<div class="pin-error">{{ error }}</div>{% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        <input class="pin-input" type="password" name="pin" inputmode="numeric" pattern="[0-9]*" maxlength="4" autofocus autocomplete="off" required>
+        <button type="submit" class="btn full">Unlock</button>
+      </form>
+    </div>
+  </div>
+  <script src="{% static 'system/js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<div class="modal-overlay" data-scold-modal data-scold-date="{{ scold.date|date:'Y-m-d' }}">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="icon">⚠</span>
+      <h2 class="modal-title">Accountability Report</h2>
+    </div>
+    <div class="modal-subtitle">{{ scold.date|date:"l, F j, Y" }} — {{ scold.missed|length }} quest{{ scold.missed|length|pluralize }} missed</div>
+
+    {% for quest in scold.missed %}
+    <div class="scold-item">
+      <div class="quest">{{ quest.title }}</div>
+      <div class="message">"{{ quest.scold }}"</div>
+    </div>
+    {% endfor %}
+
+    <div class="modal-actions">
+      <button type="button" class="btn full" data-scold-dismiss>I hear you. Moving on.</button>
+    </div>
+  </div>
+</div>

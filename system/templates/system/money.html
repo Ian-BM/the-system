@@ -1,0 +1,81 @@
+{% extends "system/base.html" %}
+{% block title %}Money — The System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Money Track</h1>
+    <div class="page-subtitle">Trading discipline &amp; rank progression</div>
+  </div>
+  <div class="rank-row">
+    <div class="rank-badge">{{ money_rank }}</div>
+    <div class="rank-label">
+      <span class="name">Current Rank</span>
+      <span class="value">{{ money_rank }}-Rank</span>
+    </div>
+  </div>
+</div>
+
+<div class="card-grid">
+  <div class="stat-tile">
+    <div class="label">Total Earned</div>
+    <div class="value">${{ total_earned }}</div>
+  </div>
+  <div class="stat-tile">
+    <div class="label">Best Day</div>
+    <div class="value">${{ best_day }}</div>
+  </div>
+  <div class="stat-tile">
+    <div class="label">Trading Days</div>
+    <div class="value">{{ trading_days }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Log Trading Day</div>
+  <form data-trading-form>
+    <div class="field">
+      <label for="amount_usd">Amount Earned (USD)</label>
+      <input type="number" step="0.01" name="amount_usd" id="amount_usd" required>
+    </div>
+    <div class="field">
+      <label for="date">Date</label>
+      <input type="date" name="date" id="date" value="{% now 'Y-m-d' %}" required>
+    </div>
+    <div class="field">
+      <label for="notes">Notes (optional)</label>
+      <input type="text" name="notes" id="notes">
+    </div>
+    <div data-form-error class="pin-error"></div>
+    <button type="submit" class="btn full">Log Entry</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">Money Rank Progression</div>
+  <div class="rank-bands">
+    {% for letter, range in rank_bands %}
+    <div class="rank-band {% if letter == money_rank %}current{% endif %}">
+      <span class="letter">{{ letter }}</span>
+      <span>{{ range }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Trading History</div>
+  {% if entries %}
+  <ul class="history-list">
+    {% for entry in entries %}
+    <li class="history-row">
+      <span class="history-date">{{ entry.date|date:"M j, Y" }}{% if entry.notes %} — {{ entry.notes }}{% endif %}</span>
+      <span class="history-value">${{ entry.amount_usd }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="page-subtitle">No entries yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

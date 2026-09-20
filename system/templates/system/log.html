@@ -1,0 +1,39 @@
+{% extends "system/base.html" %}
+{% block title %}Log — The System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Daily Log</h1>
+    <div class="page-subtitle">{{ today|date:"l, F j, Y" }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">New Entry</div>
+  <form data-journal-form>
+    <div class="field">
+      <label for="text">Journal</label>
+      <textarea name="text" id="text" placeholder="What happened today..." required></textarea>
+    </div>
+    <div data-form-error class="pin-error"></div>
+    <button type="submit" class="btn full">Save Entry</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">Entries</div>
+  {% if entries %}
+  <ul class="history-list">
+    {% for entry in entries %}
+    <li class="history-row" style="flex-direction:column; align-items:flex-start; gap:6px;">
+      <span class="history-date">{{ entry.created_at|date:"M j, Y — H:i" }}</span>
+      <span class="quest-text">{{ entry.text|linebreaksbr }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="page-subtitle">No entries yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "system/base.html" %}
+{% block title %}Dashboard — The System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Daily Quest Log</h1>
+    <div class="page-subtitle">{{ today|date:"l, F j, Y" }}</div>
+  </div>
+  <div class="rank-row">
+    <div class="rank-badge">{{ body_rank }}</div>
+    <div class="rank-badge">{{ mind_rank }}</div>
+    <div class="rank-badge">{{ money_rank }}</div>
+  </div>
+</div>
+
+<div class="card-grid" style="margin-bottom: 24px;">
+  <div class="card">
+    <div class="card-title">Quests Completed</div>
+    <div class="stat-tile" style="border:none; padding:0;">
+      <div class="value"><span data-quest-counter>{{ hud_quests_done }}/{{ hud_quests_total }}</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Days Active</div>
+    <div class="stat-tile" style="border:none; padding:0;">
+      <div class="value">{{ hud_days_active }}</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Weight Progress</div>
+    <div class="progress-track"><div class="progress-fill" style="width: {{ progress_pct }}%;"></div></div>
+    <div class="progress-meta">
+      <span>{{ weight_kg }}kg</span>
+      <span>{{ weight_start }}kg → {{ weight_goal }}kg</span>
+    </div>
+  </div>
+</div>
+
+{% for category, quests in grouped_quests.items %}
+<div class="quest-category">
+  <div class="quest-category-title">{{ category }}</div>
+  {% for quest in quests %}
+  <div class="quest-item {% if quest.completed %}done{% endif %}" data-quest-item="{{ quest.id }}">
+    <div class="quest-checkbox" data-quest-checkbox>{% if quest.completed %}✓{% endif %}</div>
+    <div class="quest-text">{{ quest.title }}</div>
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

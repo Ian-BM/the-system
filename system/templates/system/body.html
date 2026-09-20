@@ -1,0 +1,81 @@
+{% extends "system/base.html" %}
+{% block title %}Body — The System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Body Track</h1>
+    <div class="page-subtitle">Weight, workouts &amp; rank progression</div>
+  </div>
+  <div class="rank-row">
+    <div class="rank-badge">{{ body_rank }}</div>
+    <div class="rank-label">
+      <span class="name">Current Rank</span>
+      <span class="value">{{ body_rank }}-Rank</span>
+    </div>
+  </div>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title">Log Today's Weight</div>
+    <form data-weight-form>
+      <div class="field">
+        <label for="weight_kg">Weight (kg)</label>
+        <input type="number" step="0.1" name="weight_kg" id="weight_kg" value="{{ weight_kg }}" required>
+      </div>
+      <div data-form-error class="pin-error"></div>
+      <button type="submit" class="btn full">Save Weight</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Today's Workout — {{ today_workout.phase }}</div>
+    <div class="schedule-title">{{ today_workout.title }}</div>
+    <div class="schedule-detail">{{ today_workout.detail }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Body Rank Progression</div>
+  <div class="rank-bands">
+    {% for letter, range in rank_bands %}
+    <div class="rank-band {% if letter == body_rank %}current{% endif %}">
+      <span class="letter">{{ letter }}</span>
+      <span>{{ range }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">7-Day Workout Schedule</div>
+  <ul class="schedule-list">
+    {% for day in week_schedule %}
+    <li class="schedule-row {% if forloop.counter0 == 0 %}today{% endif %}">
+      <span class="schedule-day">{{ day.weekday }}</span>
+      <span>
+        <div class="schedule-title">{{ day.title }}</div>
+        <div class="schedule-detail">{{ day.detail }}</div>
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title">Weight History</div>
+  {% if entries %}
+  <ul class="history-list">
+    {% for entry in entries %}
+    <li class="history-row">
+      <span class="history-date">{{ entry.date|date:"M j, Y" }}</span>
+      <span class="history-value">{{ entry.weight_kg }}kg</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="page-subtitle">No entries yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
